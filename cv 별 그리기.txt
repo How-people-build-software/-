@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include<opencv/cv.h>
+#include<opencv/highgui.h>
+
+void setpixel(IplImage* image, int x, int y, int data)
+{
+	image->imageData[y*image->widthStep + x] = data;// img 의 [i][j] 번째 화소 데이터
+}
+
+int main(void)
+{
+	IplImage *image = cvCreateImage(cvSize(500, 500), IPL_DEPTH_8U, 1);
+	cvFillImage(image, 0);
+	cvLine(image, cvPoint(100, 100), cvPoint(50, 250), cvScalar(255), 3);
+	cvLine(image, cvPoint(50, 250), cvPoint(175, 150), cvScalar(255), 3);
+	cvLine(image, cvPoint(175, 150), cvPoint(25, 150), cvScalar(255), 3);
+	cvLine(image, cvPoint(25, 150), cvPoint(150, 250), cvScalar(255), 3);
+	cvLine(image, cvPoint(150, 250), cvPoint(100, 100), cvScalar(255), 3);
+	cvShowImage("name", image);
+	cvWaitKey(0);
+	cvReleaseImage(&image);
+	return 0;
+}

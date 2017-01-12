@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <math.h>
+
+void hamsu(char munja[])
+{
+	int i = 0;
+	while (1)
+	{
+		munja[i]++;
+		if (munja[i] == 2)
+		{
+			munja[i] = 0;
+			i++;
+		}
+		else
+			break;
+	}
+}
+
+int main(void)
+{
+	int n;
+	int numbers[100];
+	int i, j;
+	int sum = 0;
+	int count = 0;
+	char bin[100] = { 0 };
+
+	scanf_s("%d", &n);
+	for (i = 0; i < n; i++)
+		scanf_s("%d", &numbers[i]);
+	for (i = 0; i < pow(2, n - 2); i++)
+	{
+		sum = numbers[0];
+		for (j = 0; j < n - 2; j++)
+		{
+			if (bin[j] == 0)
+				sum += numbers[j + 1];
+			if (bin[j] == 1)
+				sum -= numbers[j + 1];
+		}
+		if (sum == numbers[n - 1])
+			count++;
+		hamsu(bin);
+	}
+	printf("%d\n", count);
+	return 0;
+}

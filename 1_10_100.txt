@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main(void)
+{
+	int n;
+	int number[65535];
+	int i, j = 1;
+	int Tn = 0;
+	scanf_s("%d", &n);
+	for (i = 0; i < n; i++)
+		scanf_s("%d", &number[i]);
+	for (i = 0; i < n; i++)
+	{
+		while (1)
+		{
+			Tn += j;
+			if (Tn > number[i])
+			{
+				printf("%d ", Tn % 2);
+				break;
+			}
+			j++;
+		}
+	}
+	printf("\n");
+	return 0;
+}

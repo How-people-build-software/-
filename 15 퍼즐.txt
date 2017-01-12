@@ -1,0 +1,189 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <conio.h>
+#include <Windows.h>
+
+void init(int _puzzle[][4])
+{
+	int i, j;
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			_puzzle[i][j] = 0;
+		}
+	}
+}
+
+void make(int _puzzle[][4])
+{
+	int i, j;
+	int x, y;
+	x = rand() % 4;
+	y = rand() % 4;
+	_puzzle[y][x] = -1;
+	for (i = 1; i <= 15; i++)
+	{
+		x = rand() % 4;
+		y = rand() % 4;
+		if (_puzzle[y][x] == 0)
+			_puzzle[y][x] = i;
+		else
+		{
+			i--;
+			continue;
+		}
+	}
+}
+
+void print(int _puzzle[][4])
+{
+	int i, j;
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			if (_puzzle[i][j] == -1)
+				printf("   ");
+			else
+				printf("%-3d", _puzzle[i][j]);
+		}
+		printf("\n");
+	}
+
+}
+
+int gumsa(int _puzzle[][4])
+{
+	int guri;
+	int baeyeol = 0;
+	int i, j, k, l;
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			if (_puzzle[i][j] == -1)
+			{
+				guri = (3 - i) + (3 - j);
+				break;
+			}
+		}
+	}
+	guri %= 2;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			k = i;
+			l = j + 1;
+			for (; k < 4; k++)
+			{
+				for (; l < 4; l++)
+				{
+					if (_puzzle[i][j] > _puzzle[k][l] && _puzzle[k][l] > 0)
+						baeyeol++;
+				}
+				l = 0;
+			}
+		} 
+	}
+	baeyeol %= 2;
+
+	if (guri == baeyeol)
+		return 1;
+	else
+		return 0;
+}
+
+int gumsa2(int _puzzle[][4])
+{
+	int i, j;
+	int count = 0;
+	int a[4][4] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, -1 };
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			if (_puzzle[i][j] == a[i][j])
+				count++;
+		}
+	}
+	if (count == 16)
+		return 1;
+	else
+		return 0;
+}
+
+int game(int _puzzle[][4])
+{
+	int count = 0;
+	int key;
+	int i, j;
+	int blankx, blanky;
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			if (_puzzle[i][j] == -1)
+			{
+				blankx = j;
+				blanky = i;
+			}
+		}
+	}
+	while (1)
+	{
+		key = getch();
+		if (key == 'w' && blanky < 3)
+		{
+			_puzzle[blanky][blankx] = _puzzle[blanky + 1][blankx];
+			blanky++;
+			_puzzle[blanky][blankx] = -1;
+			count++;
+		}
+		if (key == 'a' && blankx < 3)
+		{
+			_puzzle[blanky][blankx] = _puzzle[blanky][blankx + 1];
+			blankx++;
+			_puzzle[blanky][blankx] = -1;
+			count++;
+		}
+		if (key == 's' && blanky > 0)
+		{
+			_puzzle[blanky][blankx] = _puzzle[blanky - 1][blankx];
+			blanky--;
+			_puzzle[blanky][blankx] = -1;
+			count++;
+		}
+		if (key == 'd' && blankx > 0)
+		{
+			_puzzle[blanky][blankx] = _puzzle[blanky][blankx - 1];
+			blankx--;
+			_puzzle[blanky][blankx] = -1;
+			count++;
+		}
+		if (gumsa2(_puzzle) == 1)
+			break;
+		system("cls");
+		print(_puzzle);
+	}
+	return count;
+}
+
+int main(void)
+{
+	srand(time(NULL));
+	int puzzle[4][4] = { 0, };
+	int i, j;
+	system("mode con: lines=5 cols=15");
+	do
+	{
+		init(puzzle);
+		make(puzzle);
+	} while (gumsa(puzzle) == 0);
+	print(puzzle);
+	printf("%d번만에 성공하였습니다.\n", game(puzzle));
+	return 0;
+}

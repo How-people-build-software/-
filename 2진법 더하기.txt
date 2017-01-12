@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 100
+
+int max(int a, int b)
+{
+	if (a > b)
+		return a;
+	else
+		return b;
+}
+
+int main(void)
+{
+	char letter[3][MAX + 1] = { 0, };
+	int i;
+	gets_s(letter[0]);
+	gets_s(letter[1]);
+	strrev(letter[0]);
+	strrev(letter[1]);
+	for (i = 0; i < max(strlen(letter[0]), strlen(letter[1])); i++)
+	{
+		if (letter[0][i] == -2 || letter[0][i] == 0)	//0번째가 없을때
+			letter[2][i] = (letter[1][i] - '0') + (letter[2][i]);
+		else if (letter[1][i] == -2 || letter[1][i] == 0) // 1번째가 없을때
+			letter[2][i] = (letter[0][i] - '0') + (letter[2][i]);
+		else //둘다 있을때
+			letter[2][i] = (letter[0][i] - '0') + (letter[1][i] - '0') + (letter[2][i]);
+
+		letter[2][i + 1] = letter[2][i] / 2;
+		letter[2][i] %= 2;
+		letter[2][i] += '0';
+	}
+	if (letter[2][max(strlen(letter[0]), strlen(letter[1]))] == 1)
+		letter[2][max(strlen(letter[0]), strlen(letter[1]))] += '0';
+	strrev(letter[2]);
+	printf("%s\n", letter[2]);
+	return 0;
+}

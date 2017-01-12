@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int main(void)
+{
+	int n;
+	int i;
+	int gumsanumber;
+	int namuji;
+	int count = 0;
+	scanf_s("%d", &n);
+	for (i = 1; i <= n; i++)
+	{
+		gumsanumber = i;
+		while (gumsanumber != 0)
+		{
+			namuji = gumsanumber % 10;
+			if (namuji % 3 == 0 && namuji != 0)
+				count++;
+			gumsanumber /= 10;
+		}
+	}
+	printf("%d", count);
+	return 0;
+}
